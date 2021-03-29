@@ -1,0 +1,33 @@
+.navItem {
+    color:#6bd098
+}
+
+.navItem:hover {
+    color:#28a745
+}
+
+.navbar-nav {
+    padding-right: 1%;
+}
+
+body {
+    background-color: #e7e7e7;
+}
+
+#postal {
+    min-width: 200px;
+    max-width: 300px;
+    margin: 8px;
+}
+
+#distanceSlider {
+    margin: 8px;
+}
+
+.groceryItemComp {
+    margin: 1%;
+}
+.groceryItemComp2 {
+    margin-right: 2%;
+    width: 100%
+}
