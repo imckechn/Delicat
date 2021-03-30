@@ -31,25 +31,27 @@ export class FilterPanel extends React.Component {
 
     return (
       <ThemeProvider theme={theme}>
-        {this.state.isPanelOpen ?
-        <>
-          <br></br>
-          <i class="fa fa-chevron-left fa-lg" color="default" onClick={this.toggle} ></i>
-          <br></br>
-          <h3>Filters</h3>
-          <GetStoreFilters/>
-          <form id="postal" noValidate autoComplete="off">
-            <TextField  label="Postal Code" />
-          </form>
-          <br></br>
-          <GetDistanceFilter/>
-        </>
-        :
-        <>
-          <br></br>
-          <i class="fa fa-chevron-right fa-lg" color="default" onClick={this.toggle}></i>
-        </>
-        }
+        <div className="filterPanel">
+          {this.state.isPanelOpen ?
+          <div>
+            <br></br>
+            <i class="fa fa-chevron-left fa-lg" color="default" onClick={this.toggle} ></i>
+            <br></br>
+            <h3>Filters</h3>
+            <GetStoreFilters/>
+            <form id="postal" noValidate autoComplete="off">
+              <TextField  label="Postal Code" />
+            </form>
+            <br></br>
+            <GetDistanceFilter/>
+          </div>
+          :
+          <>
+            <br></br>
+            <i class="fa fa-chevron-right fa-lg" color="default" onClick={this.toggle}></i>
+          </>
+          }
+        </div>
       </ThemeProvider>
     );
   }

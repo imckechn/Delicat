@@ -1,17 +1,19 @@
+/*success colour: #6bd098, hover: #28a745*/
 .navItem {
-    color:#6bd098
+    color: #333333
 }
 
 .navItem:hover {
-    color:#28a745
+    color: black
 }
 
 .navbar-nav {
     padding-right: 1%;
 }
 
-body {
-    background-color: #e7e7e7;
+.navbar {
+    background: #e7e7e7;
+    box-shadow: 0 6px 10px -4px rgb(0 0 0 / 30%)
 }
 
 #postal {
@@ -24,10 +26,28 @@ body {
     margin: 8px;
 }
 
-.groceryItemComp {
-    margin: 1%;
+.groceryItem {
+    margin-top: 2%;
+    margin-bottom: 2%;
 }
-.groceryItemComp2 {
+
+.groceryInputbox {
+    margin-bottom: 2%;
+}
+
+.groceryItemTags {
     margin-right: 2%;
     width: 100%
+}
+
+.btn-icon {
+    border-radius: 50%;
+    text-align: center;
+    font-size: large;
+}
+
+.center {
+    width:100%;
+    display: flex;
+    justify-content: center;
 }

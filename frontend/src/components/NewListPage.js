@@ -3,9 +3,20 @@ import { Grid } from "@material-ui/core";
 import { IndexNavbar } from "./IndexNavbar";
 import { ListItem } from "./ListItem";
 import { FilterPanel } from "./FilterPanel";
-import { Container } from "reactstrap";
+import { Container, Button} from "reactstrap";
 
 export class NewListPage extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      numItems: 1,
+    }
+  }
+
+  addListItem = () => {
+    this.setState({ numItems: this.state.numItems + 1 })
+  }
+
   render() {
     return (
       <>
@@ -20,8 +31,12 @@ export class NewListPage extends React.Component {
           <Grid item xs={6}>
             <h2>New List</h2>
             <ListItem />
+            <div className="center">
+              <Button className="btn-icon" color="success" onClick={this.addListItem}>
+                +
+              </Button>
+            </div>
           </Grid>
-
         </Grid>
       </>
     );
