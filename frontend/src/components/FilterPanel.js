@@ -29,6 +29,10 @@ export class FilterPanel extends React.Component {
       },
     });
 
+    fetch('/test-url-please-work').then(res => res.json()).then(data => {
+      console.log(data);
+    });
+
     return (
       <ThemeProvider theme={theme}>
         {this.state.isPanelOpen ?
