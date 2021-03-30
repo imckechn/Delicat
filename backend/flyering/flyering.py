@@ -11,27 +11,37 @@ print("Hello world")
 # Internal representation of the filters
 # applied druing list creation.
 class Filter:
-    def __init__(self):
-        self.favourite_stores = []
-        self.excluded_stores = []
-        self.distance_km = -1.0
-        self.location = ""
+    def __init__(self, fronted_filter):
+        self.favourite_stores = fronted_filter.favourite_stores or []
+        self.excluded_stores = fronted_filter.excluded_stores or []
+        self.distance_km = fronted_filter.distance_km or -1.0
+        self.location = fronted_filter.location or ""
+
 
 # Internal representation of the items
 # added to a list.
 class List_Item:
-    def __init__(self):
-        self.name = ""
-        self.amount = ""
-        self.brands = []
-        self.tags = []
+    def __init__(self, frontend_item):
+        self.name = frontend_item.name or ""
+        self.amount = frontend_item.amount or ""
+        self.brands = frontend_item.brands or []
+        self.tags = frontend_item.tags or []
 
 # Internal representation of the items
 # added to a list.
 class Shopping_List:
-    def __init__(self):
-        self.filters = Filter()
-        self.list_items = []
+    def __init__(self, frontend_list):
+        self.filters = frontend_list.filters
+        self.list_items = frontend_list.list_items or []
+        convert_filters()
+        convert_items()
+
+    def convert_filters():
+        self.filters = Filter(self.filters)
+
+    def convert_items():
+        for item in self.list_items:
+            item = List_Item(item)
 
 ### END REPRESENTATIONS #################################################
 
