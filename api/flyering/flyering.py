@@ -1,4 +1,6 @@
 
+import json
+
 ### REPRESENTATIONS ###################################################
 # Data recieved from the frontend
 # will be converted into the following
@@ -42,6 +44,21 @@ class Shopping_List:
         for item in self.list_items:
             item = List_Item(item)
 
+# Internal representation of the records
+# from the database.
+class Record:
+    def __init__(self, db_record):
+        self.common_name = getattr(db_record, "commonName", "")
+        self.brand = getattr(db_record, "brand", "")
+        self.full_name = getattr(db_record, "fullName", "")
+        self.price = getattr(db_record, "price", float('inf'))
+        self.store = getattr(db_record, "store", "")
+        self.tags = getattr(db_record, "tags", [])
+        self.location = getattr(db_record, "location", "")
+
+    def test(self):
+        print("NOPE")
+
 ### END REPRESENTATIONS #################################################
 
 ### ALGORITHM ###########################################################
@@ -60,5 +77,108 @@ class Shopping_List:
 
 ### IMPLEMENTATION #######################################################
 def get_flyer(frontend_list):
-    return "FIXME"
+    internal_list = Shopping_List(frontend_list)
+    flyer = []
+    for item in internal_list.list_items:
+        records = query_db(item)
+        records = filter_by_distance(records)
+        store_records = group_by_store(records)
+        records = []
+
+        for store_set in store_records:
+            records = records + filter_by_value(store_set)
+        
+        flyer = flyer + records
+        # TODO Add DB record class
+    
+        # get from DB by name, excluded stores, brand, tags
+        # Filter by distance
+        # group results by store
+    
+    flyer = records_to_JSON_list(flyer)
+
+    return flyer
+
+def query_db(item):
+    # FIXME
+    return []
+
+def filter_by_distance(records):
+    return records
+
+def group_by_store(records):
+    store_map = set(map(lambda x:x.store, records))
+    new_list = []
+    for store in store_map:
+        new_list.append([item for item in records if item.store == store])
+
+    return new_list
+
+def filter_by_value(records):
+    max = 3
+    records.sort(key=lambda item: item.amount/item.price, reverse=True)
+    new_list = records[:max]
+    return new_list
+
+def records_to_JSON_list(flyer):
+    json_list = []
+    for item in flyer:
+        json_list.append(item.__dict__)
+
+    return json.dumps(json_list)
+
 ### END IMPLEMENTATION ###################################################
+
+### TESTS ################################################################
+class Empty:
+    def __init__(self):
+        self = self
+    
+    def print_self(self):
+        print(self.__dict__)
+
+def run_tests():
+    print("STARTING TESTS")
+    test_group_by_store()
+    test_filter_by_value()
+    test_records_to_JSON()
+    print("FINISHED TESTS")
+
+def test_group_by_store():
+    records = []
+    for x in range(0, 15):
+        temp = Empty()
+        temp.store = x % 3
+        temp.other = x
+        temp.print_self()
+        print(temp)
+        records.append(temp)
+
+    records = group_by_store(records)
+
+    for group in records:
+        print("[")
+        for item in group:
+            item.print_self()
+        print("],")
+
+def test_filter_by_value():
+    records = []
+    for i in range(0, 100):
+        for j in range(0, 100):
+            temp = Empty()
+            temp.amount = i
+            temp.price = 100 - j
+            records.append(temp)
+    
+    records = filter_by_value(records)
+    for item in records:
+        item.print_self()
+
+def test_records_to_JSON():
+    temp = Record(Empty())
+    records = records_to_JSON_list([temp, temp])
+    print(records)
+
+run_tests()
+### END TESTS ############################################################
