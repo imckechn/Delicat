@@ -82,3 +82,11 @@
 .add-padding {
     padding: 1%;
 }
+
+.below-nav {
+    padding-bottom: 85px;
+}
+
+.footer-button-space {
+    margin-right: 2%;
+}

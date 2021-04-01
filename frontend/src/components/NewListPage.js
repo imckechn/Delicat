@@ -1,15 +1,18 @@
 import React from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Collapse } from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
 import { IndexNavbar } from "./IndexNavbar";
 import { ListItem } from "./ListItem";
 import { FilterPanel } from "./FilterPanel";
-import { Container, Button} from "reactstrap";
+import { Container, Button } from "reactstrap";
 
 export class NewListPage extends React.Component {
   constructor() {
     super();
     this.state = {
       numItems: 1,
+      loggedIn: true,
+      saved: false,
     }
   }
 
@@ -25,7 +28,12 @@ export class NewListPage extends React.Component {
     return (
       <>
         <IndexNavbar />
-        <h1>New List</h1>
+        <div className="below-nav"></div>
+        <Collapse in={this.state.saved}>
+        <Alert action={<Button className="btn-link" color="success"><i class="fa fa-times" onClick={() => {this.setState({ saved: false})}}></i></Button>}>
+          Successfully Saved List!
+        </Alert>
+      </Collapse>
         <Grid container spacing={3}>
           <Grid item xs={3}>
             <Container>
@@ -44,11 +52,20 @@ export class NewListPage extends React.Component {
             </div>
           </Grid>
         </Grid>
+        {this.state.loggedIn ?
         <div className="fixed-bottom"> 
-              <Container className="center white-bg add-padding">
-                <Button className="btn" color="success" href="/flyer">Generate Flyer</Button>
-              </Container>
+          <Container className="center white-bg add-padding">
+            <Button className="footer-button-space" color="success" onClick={() => {this.setState({ saved: true})}}>Save List</Button>
+            <Button color="success" href="/flyer">Generate Flyer</Button>
+          </Container>
         </div>
+        :
+        <div className="fixed-bottom"> 
+          <Container className="center white-bg add-padding">
+            <Button className="btn" color="success" href="/flyer">Generate Flyer</Button>
+          </Container>
+        </div>
+        }
       </>
     );
   }
