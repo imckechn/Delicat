@@ -18,6 +18,10 @@ export class NewListPage extends React.Component {
   }
 
   render() {
+    let itemInputs = [];
+    for (let i = 0; i < this.state.numItems; i++) {
+      itemInputs.push(<ListItem id={"item" + i}/>);
+    }
     return (
       <>
         <IndexNavbar />
@@ -30,14 +34,21 @@ export class NewListPage extends React.Component {
           </Grid>
           <Grid item xs={6}>
             <h2>New List</h2>
-            <ListItem />
-            <div className="center">
+            <div>
+              {itemInputs}
+            </div>
+            <div className="center add-space">
               <Button className="btn-icon" color="success" onClick={this.addListItem}>
                 +
               </Button>
             </div>
           </Grid>
         </Grid>
+        <div className="fixed-bottom"> 
+              <Container className="center white-bg add-padding">
+                <Button className="btn" color="success" href="/flyer">Generate Flyer</Button>
+              </Container>
+        </div>
       </>
     );
   }
