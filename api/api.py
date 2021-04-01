@@ -4,18 +4,16 @@
 # to run the backend, open another terminal and either type "flask run" or "npm run start-api"
 import flask
 import json
+from flyering import get_flyer 
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
 
-@app.route('/test-url-please-work', methods=['GET'])
-def test():
-    data = {
-        "TestURL": {
-            "value": "https://www.youtube.com/watch?v=oHg5SJYRHA0",
-        }
-    }
-    return data
+@app.route('/test-url-please-work/<shopping_list>', methods=['POST'])
+def process_list(shopping_list):
+    return get_flyer(shopping_list)
 
-app.run()
+#app.run()
+
+process_list({})
