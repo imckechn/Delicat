@@ -1,6 +1,13 @@
 
 import json
+import os
+import sys
+import sqlite3
 
+dir_path = os.path.dirname(os.path.realpath(__file__)) + r"\..\\"
+sys.path.append(dir_path)
+
+from db_test import create_purrdev_connection
 ### REPRESENTATIONS ###################################################
 # Data recieved from the frontend
 # will be converted into the following
@@ -10,54 +17,57 @@ import json
 # need to be made in each classes' constructor.
 
 # Internal representation of the filters
-# applied druing list creation.
+# applied druing list creation. Expects a dict.
 class Filter:
     def __init__(self, fronted_filter):
-        self.favourite_stores = fronted_filter.favourite_stores or []
-        self.excluded_stores = fronted_filter.excluded_stores or []
-        self.distance_km = fronted_filter.distance_km or -1.0
-        self.location = fronted_filter.location or ""
+        self.favourite_stores = fronted_filter.get("favourite_stores", [])
+        self.excluded_stores = fronted_filter.get("excluded_stores", [])
+        self.distance_km = fronted_filter.get("distance_km", -1.0)
+        self.location = fronted_filter.get("location", "")
 
 
 # Internal representation of the items
-# added to a list.
+# added to a list. Expects a dict.
 class List_Item:
     def __init__(self, frontend_item):
-        self.name = frontend_item.name or ""
-        self.amount = frontend_item.amount or ""
-        self.brands = frontend_item.brands or []
-        self.tags = frontend_item.tags or []
+        self.name = frontend_item.get("name", "")
+        self.amount = frontend_item.get("amount", "")
+        self.brands = frontend_item.get("brands", [])
+        self.tags = frontend_item.get("tags", [])
 
 # Internal representation of the items
-# added to a list.
+# added to a list. Expects a dict.
 class Shopping_List:
     def __init__(self, frontend_list):
-        self.filters = frontend_list.filters
-        self.list_items = frontend_list.list_items or []
-        convert_filters()
-        convert_items()
+        self.filters = frontend_list.get("filters", {})
+        self.list_items = frontend_list.get("list_items", [])
+        self.convert_filters()
+        self.convert_items()
 
-    def convert_filters():
+    def convert_filters(self):
         self.filters = Filter(self.filters)
 
-    def convert_items():
+    def convert_items(self):
+        converted_items = []
         for item in self.list_items:
-            item = List_Item(item)
+            converted_items.append(List_Item(item))
+        self.list_items = converted_items
 
 # Internal representation of the records
-# from the database.
+# from the database. Expects a dict input.
 class Record:
     def __init__(self, db_record):
-        self.common_name = getattr(db_record, "commonName", "")
-        self.brand = getattr(db_record, "brand", "")
-        self.full_name = getattr(db_record, "fullName", "")
-        self.price = getattr(db_record, "price", float('inf'))
-        self.store = getattr(db_record, "store", "")
-        self.tags = getattr(db_record, "tags", [])
-        self.location = getattr(db_record, "location", "")
-
-    def test(self):
-        print("NOPE")
+        #Must convert from tuple, but tuple may vary...
+        # always get full row?
+        # convert tuple to dict?
+        self.common_name = db_record.get("commonName", "")
+        self.brand = db_record.get("brand", "")
+        self.full_name = db_record.get("fullName", "")
+        self.price = db_record.get("price", float('inf'))
+        self.store = db_record.get("store", "")
+        self.tags = db_record.get("tags", [])
+        self.location = db_record.get("location", "")
+        self.amount = db_record.get("amount", 1.0)
 
 ### END REPRESENTATIONS #################################################
 
@@ -80,7 +90,7 @@ def get_flyer(frontend_list):
     internal_list = Shopping_List(frontend_list)
     flyer = []
     for item in internal_list.list_items:
-        records = query_db(item)
+        records = query_db(item, internal_list.filters)
         records = filter_by_distance(records)
         store_records = group_by_store(records)
         records = []
@@ -99,9 +109,43 @@ def get_flyer(frontend_list):
 
     return flyer
 
-def query_db(item):
+def build_condition(general_condition,filter_list):
+    condition = ""
+    if (filter_list):
+        condition = general_condition
+        for i in range(1, len(filter_list)):
+            condition = condition + "OR" + general_condition
+        condition = "AND (" + condition + ") "
+
+    return condition
+
+def query_db(item, filters):
     # FIXME
-    return []
+    """
+    Query tasks by priority
+    :param conn: the Connection object
+    :param priority:
+    :return:
+    """
+    conn = create_purrdev_connection()
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    #name, excluded stores, brand, tags, amount?
+    select_statment = "SELECT * FROM products WHERE (commonName=?"
+    select_statment = select_statment + build_condition("brand=?", item.brands) + build_condition("store!=?", filters.excluded_stores) + build_condition("tags=?", item.tags) + ")"
+    params = tuple([item.name] + item.brands + filters.excluded_stores + item.tags)
+
+    cur.execute(select_statment, params)
+
+    rows = cur.fetchall()
+    result = []
+
+    for row in rows:
+        result.append(Record(dict(row)))
+
+    conn.close
+
+    return result
 
 def filter_by_distance(records):
     return records
@@ -116,7 +160,7 @@ def group_by_store(records):
 
 def filter_by_value(records):
     max = 3
-    records.sort(key=lambda item: item.amount/item.price, reverse=True)
+    records.sort(key=lambda item: item.price/item.amount if (item.price != 0 and item.amount != 0) else float('inf'))
     new_list = records[:max]
     return new_list
 
@@ -142,6 +186,8 @@ def run_tests():
     test_group_by_store()
     test_filter_by_value()
     test_records_to_JSON()
+    test_query_item()
+    test_get_flyer()
     print("FINISHED TESTS")
 
 def test_group_by_store():
@@ -176,9 +222,23 @@ def test_filter_by_value():
         item.print_self()
 
 def test_records_to_JSON():
-    temp = Record(Empty())
+    temp = Record({})
+    temp = Record({"fullName":"bob"})
     records = records_to_JSON_list([temp, temp])
     print(records)
 
-run_tests()
+def test_query_item():
+    item= List_Item({"name":"eggs"})
+    filters= Filter({})
+    rows = query_db(item, filters)
+    for row in rows:
+        print(row.__dict__)
+
+def test_get_flyer():
+    item_1 = {"name":"eggs","brands":["Selection"]}
+    item_2 = {"name":"ground beef","brands":["Average Farms"]}
+    response = get_flyer({"filters":{"excluded_stores":["Walmart"]}, "list_items":[item_1,item_2]})
+    print(response)
+
+#run_tests()
 ### END TESTS ############################################################
