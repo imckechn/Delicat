@@ -29,8 +29,15 @@ export class FilterPanel extends React.Component {
       },
     });
 
-    fetch('/test-url-please-work').then(res => res.json()).then(data => {
-      console.log(data);
+    // TESTING OPTIMIZE ENDPOINT *************************************
+    let item_1 = {name:"eggs",brands:["Selection"]};
+    let item_2 = {name:"ground beef",brands:["Average Farms"]};
+    let params = JSON.stringify({filters:{excluded_stores:["Walmart"]}, list_items:[item_1,item_2]});
+
+    fetch("/optimize-list/" + new URLSearchParams({shopping_list: params}), {
+      method: "GET", 
+    }).then(res => {
+      console.log("Request complete! response:", res);
     });
 
     return (

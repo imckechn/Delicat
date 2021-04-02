@@ -3,17 +3,18 @@
 # if this will be a problem.
 # to run the backend, open another terminal and either type "flask run" or "npm run start-api"
 import flask
+from flask import request
 import json
-from flyering import get_flyer 
+from flyering import get_flyer
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
 
-@app.route('/test-url-please-work/<shopping_list>', methods=['POST'])
-def process_list(shopping_list):
-    return get_flyer(shopping_list)
+@app.route('/optimize-list/<shopping_list>', methods=['GET', 'POST'])
+def optimize_list(shopping_list):
+    print(shopping_list)
+    return json.dumps("TEST")#get_flyer(json.loads(shopping_list))
 
-#app.run()
-
-process_list({})
+if __name__ == '__main__':
+    app.run()
