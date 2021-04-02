@@ -11,7 +11,7 @@ export class NewListPage extends React.Component {
     super();
     this.state = {
       numItems: 1,
-      loggedIn: true,
+      loggedIn: false,
       saved: false,
       editTitle: false,
       listName: "New List",
@@ -102,13 +102,13 @@ export class NewListPage extends React.Component {
         <div className="fixed-bottom"> 
           <Container className="center white-bg add-padding">
             <Button className="footer-button-space" color="success" onClick={() => {this.setState({ saved: true})}}>Save List</Button>
-            <Button color="success" href="/flyer">Generate Flyer</Button>
+            <Button color="success" href="/flyer" name={this.state.listName}>Generate Flyer</Button>
           </Container>
         </div>
         :
         <div className="fixed-bottom"> 
           <Container className="center white-bg add-padding">
-            <Button className="btn" color="success" href="/flyer">Generate Flyer</Button>
+            <Button className="btn" color="success" href="/flyer" name={this.state.listName}>Generate Flyer</Button>
           </Container>
         </div>
         }
