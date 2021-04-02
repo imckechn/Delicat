@@ -2,7 +2,16 @@ import sqlite3
 from sqlite3 import Error
 import json
 import os
+from pathlib import Path
 
+def get_dir_path():
+    return os.path.dirname(os.path.realpath(__file__))
+
+def get_purrdev_path():
+    return Path(get_dir_path() + "/purrdev.db")
+
+def get_data_path():
+    return Path(get_dir_path() + "/data.json")
 
 def create_connection(db_file):
     """ create a database connection to a SQLite database """
@@ -16,9 +25,10 @@ def create_connection(db_file):
     return conn
 
 def create_purrdev_connection():
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    database = dir_path + r"\purrdev.db"
-    return create_connection(database)
+    #db_path = Path("purrdev.db")
+    #dir_path = os.path.dirname(os.path.realpath(__file__))
+    #database = dir_path + r"\purrdev.db"
+    return create_connection(get_purrdev_path())
 
 def create_table(conn, create_table_sql):
     """ create a table from the create_table_sql statement
@@ -75,11 +85,9 @@ def insert_product(conn, product):
     conn.commit()
     return cur.lastrowid
 
-
 def prime_db():
     # Delete the DB if it already exists
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    database = dir_path + r"\purrdev.db"
+    database = get_purrdev_path()
 
     if os.path.exists(database):
         os.remove(database)
@@ -97,7 +105,7 @@ def prime_db():
     # create tables
     if conn is not None:
         create_table(conn, sql_create_products_table)
-        prime_file = dir_path + r"\..\data.json"
+        prime_file = get_data_path()
 
         with open(prime_file, 'r') as myfile:
             data = myfile.read()
@@ -113,8 +121,7 @@ def prime_db():
         print("Error! cannot create the database connection.")
 
 def ensure_db():
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    database = dir_path + r"\purrdev.db"
+    database = get_purrdev_path()
 
     if (not os.path.exists(database)):
         prime_db()
@@ -122,3 +129,12 @@ def ensure_db():
 # Note, :memory: as the directory to create in RAM
 if __name__ == '__main__':
     prime_db()
+
+"""
+Traceback (most recent call last):
+  File "/Users/annie/Documents/react-projects/delicat-clone/Delicat/api/api_tests.py", line 15, in setUpClass
+    prime_db()
+  File "/Users/annie/Documents/react-projects/delicat-clone/Delicat/api/test_db.py", line 102, in prime_db
+    with open(prime_file, 'r') as myfile:
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/annie/Documents/react-projects/delicat-clone/Delicat/api\\..\\data.json'
+"""
