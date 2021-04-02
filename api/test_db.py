@@ -67,16 +67,7 @@ def db_test():
     else:
         print("Error! cannot create the database connection.")
 
-# TO DO
-# Create DB
-# Prime / Reset
 def insert_product(conn, product):
-    """
-    Create a new record into the products table
-    :param conn:
-    :param product:
-    :return: product id
-    """
     sql = ''' INSERT INTO products(commonName,brand,fullName,price,store,tags)
               VALUES(?,?,?,?,?,?) '''
     cur = conn.cursor()
