@@ -40,7 +40,7 @@ export default function GetStoreFilters() {
           multiple
           value={favStoreName}
           onChange={handleFavChange}
-          input={<Input id="select-multiple-chip" />}
+          input={<Input />}
           renderValue={(selected) => (
             <div className={classes.chips}>
               {selected.map((value) => (
@@ -62,7 +62,7 @@ export default function GetStoreFilters() {
           multiple
           value={excludeStoreName}
           onChange={handleExcludeChange}
-          input={<Input id="select-multiple-chip" />}
+          input={<Input />}
           renderValue={(selected) => (
             <div className={classes.chips}>
               {selected.map((value) => (

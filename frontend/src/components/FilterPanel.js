@@ -35,7 +35,7 @@ export class FilterPanel extends React.Component {
           {this.state.isPanelOpen ?
           <div>
             <br></br>
-            <i class="fa fa-chevron-left fa-lg" color="default" onClick={this.toggle} ></i>
+            <i className="fa fa-chevron-left fa-lg" color="default" onClick={this.toggle} ></i>
             <br></br>
             <h3>Filters</h3>
             <GetStoreFilters/>
@@ -48,7 +48,7 @@ export class FilterPanel extends React.Component {
           :
           <>
             <br></br>
-            <i class="fa fa-chevron-right fa-lg" color="default" onClick={this.toggle}></i>
+            <i className="fa fa-chevron-right fa-lg" color="default" onClick={this.toggle}></i>
           </>
           }
         </div>

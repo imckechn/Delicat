@@ -18,14 +18,17 @@ export class NewListPage extends React.Component {
     }
   }
 
+  // Keeps track of how many list items to display
   addListItem = () => {
     this.setState({ numItems: this.state.numItems + 1 })
   }
 
+  // Toggles ability to edit title
   toggleEditTitle = () => {
     this.setState({ editTitle: !this.state.editTitle })
   }
 
+  // Updates name of list
   handleChange = (val) => {
     this.setState({listName: val.target.value});
   }
@@ -33,7 +36,7 @@ export class NewListPage extends React.Component {
   render() {
     let itemInputs = [];
     for (let i = 0; i < this.state.numItems; i++) {
-      itemInputs.push(<ListItem id={"item" + i}/>);
+      itemInputs.push(<ListItem key={"item" + i}/>);
     }
     const theme = createMuiTheme({
       palette: {
@@ -50,7 +53,7 @@ export class NewListPage extends React.Component {
         <IndexNavbar />
         <div className="below-nav"></div>
         <Collapse in={this.state.saved}>
-        <Alert action={<Button className="btn-link" color="success"><i class="fa fa-times" onClick={() => {this.setState({ saved: false})}}></i></Button>}>
+        <Alert action={<Button className="btn-link" color="success"><i className="fa fa-times" onClick={() => {this.setState({ saved: false})}}></i></Button>}>
           Successfully Saved List!
         </Alert>
       </Collapse>
@@ -102,13 +105,13 @@ export class NewListPage extends React.Component {
         <div className="fixed-bottom"> 
           <Container className="center white-bg add-padding">
             <Button className="footer-button-space" color="success" onClick={() => {this.setState({ saved: true})}}>Save List</Button>
-            <Button color="success" href="/flyer" name={this.state.listName}>Generate Flyer</Button>
+            <Button color="success" href="/flyer">Generate Flyer</Button>
           </Container>
         </div>
         :
         <div className="fixed-bottom"> 
           <Container className="center white-bg add-padding">
-            <Button className="btn" color="success" href="/flyer" name={this.state.listName}>Generate Flyer</Button>
+            <Button className="btn" color="success" href="/flyer">Generate Flyer</Button>
           </Container>
         </div>
         }

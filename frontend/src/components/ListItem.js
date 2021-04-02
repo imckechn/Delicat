@@ -2,6 +2,7 @@ import React from "react";
 import TextField from '@material-ui/core/TextField';
 import { FormControl, InputLabel, Select, ThemeProvider, createMuiTheme, Grid} from '@material-ui/core/';
 
+// Individual list item form details
 export class ListItem extends React.Component {
   render() {
     const theme = createMuiTheme({
@@ -50,7 +51,6 @@ export class ListItem extends React.Component {
                     fullWidth
                     inputProps={{
                       name: 'amount',
-                      id: 'outlined-age-native-simple',
                     }}
                   >
                     <option aria-label="None" value="" />
@@ -69,7 +69,6 @@ export class ListItem extends React.Component {
                     fullWidth
                     inputProps={{
                       name: 'brands',
-                      id: 'outlined-age-native-simple',
                     }}
                   >
                     <option aria-label="None" value="" />
