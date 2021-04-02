@@ -1,5 +1,5 @@
 import unittest
-from db_test import prime_db
+from test_db import prime_db
 from flyering import *
 
 #### UNIT TESTS FOR FLYERING ALGORITHM

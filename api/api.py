@@ -10,11 +10,10 @@ from flyering import get_flyer
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
-
-@app.route('/optimize-list/<shopping_list>', methods=['GET', 'POST'])
-def optimize_list(shopping_list):
-    print(shopping_list)
-    return json.dumps("TEST")#get_flyer(json.loads(shopping_list))
+@app.route('/optimize-list', methods=['POST'])
+def optimize_list():
+    shopping_list = request.get_json().get('shopping_list', {})
+    return json.dumps(get_flyer(shopping_list))
 
 if __name__ == '__main__':
     app.run()

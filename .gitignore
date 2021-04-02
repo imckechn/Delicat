@@ -2,3 +2,7 @@ node_modules
 .DS_Store
 *.pyc
 *.db
+<<<<<<< HEAD
+=======
+__pycache__/
+>>>>>>> Got an endpoint sample working, changed db_test to test_db
