@@ -2,6 +2,7 @@ import React from "react";
 import { TextField, ThemeProvider, createMuiTheme } from "@material-ui/core";
 import GetStoreFilters from './hooks/GetStoreFilters';
 import GetDistanceFilter from "./hooks/GetDistanceFilter";
+import { param } from "jquery";
 
 export class FilterPanel extends React.Component {
   constructor() {
@@ -27,17 +28,6 @@ export class FilterPanel extends React.Component {
           contrastText: '#fff',
         },
       },
-    });
-
-    // TESTING OPTIMIZE ENDPOINT *************************************
-    let item_1 = {name:"eggs",brands:["Selection"]};
-    let item_2 = {name:"ground beef",brands:["Average Farms"]};
-    let params = JSON.stringify({filters:{excluded_stores:["Walmart"]}, list_items:[item_1,item_2]});
-
-    fetch("/optimize-list/" + new URLSearchParams({shopping_list: params}), {
-      method: "GET", 
-    }).then(res => {
-      console.log("Request complete! response:", res);
     });
 
     return (

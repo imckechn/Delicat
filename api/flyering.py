@@ -3,7 +3,7 @@ import json
 import os
 import sys
 import sqlite3
-from db_test import create_purrdev_connection
+from test_db import create_purrdev_connection, ensure_db
 ### REPRESENTATIONS ###################################################
 # Data recieved from the frontend
 # will be converted into the following
@@ -85,6 +85,7 @@ class Record:
 
 ### IMPLEMENTATION #######################################################
 def get_flyer(frontend_list):
+    ensure_db()
     internal_list = Shopping_List(frontend_list)
     flyer = []
     for item in internal_list.list_items:
