@@ -1,0 +1,146 @@
+[
+    {
+        "commonName": "eggs",
+        "brand": "No Name",
+        "fullName": "No Name Grade A Large Eggs",
+        "price": "3.09",
+        "store": "Zehrs",
+        "tags": []
+    },
+    {
+        "commonName": "eggs",
+        "brand": "PC Organics",
+        "fullName": "PC Organics Free-Range Brown Eggs",
+        "price": "6.79",
+        "store": "Zehrs",
+        "tags": []
+    },
+    {
+        "commonName": "ground beef",
+        "brand": "President's Choice",
+        "fullName": "President's Choice Lean Ground Beef",
+        "price": "19.80",
+        "store": "Zehrs",
+        "tags": []
+    },
+    {
+        "commonName": "ground beef",
+        "brand": "In House Brand",
+        "fullName": "In House Medium Ground Beef",
+        "price": "13.21",
+        "store": "Zehrs",
+        "tags": []
+    },
+    {
+        "commonName": "baguette",
+        "brand": "ACE",
+        "fullName": "Ace White Baguette",
+        "price": "3.00",
+        "store": "Zehrs",
+        "tags": []
+    },    
+    {
+        "commonName": "baguette",
+        "brand": "Average Baguettes",
+        "fullName": "Average White Baguette",
+        "price": "2.49",
+        "store": "Zehrs",
+        "tags": []
+    },
+    {
+        "commonName": "eggs",
+        "brand": "Great Value",
+        "fullName": "Great Value Large Eggs",
+        "price": "3.00",
+        "store": "Walmart",
+        "tags": []
+    },
+    {
+        "commonName": "eggs",
+        "brand": "Gray Ridge",
+        "fullName": "Gray Ridge Super 747 Large Eggs",
+        "price": "4.29",
+        "store": "Walmart",
+        "tags": []
+    },
+    {
+        "commonName": "ground beef",
+        "brand": "Your Fresh Market",
+        "fullName": "Your Fresh Market Lean Ground Beef",
+        "price": "13.33",
+        "store": "Walmart",
+        "tags": []
+    },
+    {
+        "commonName": "ground beef",
+        "brand": "Your Slightly Less Fresh Market",
+        "fullName": "Your Slightly Less Fresh Market Lean Ground Beef",
+        "price": "12.00",
+        "store": "Walmart",
+        "tags": []
+    },
+    {
+        "commonName": "baguette",
+        "brand": "Your Fresh Market",
+        "fullName": "Your Fresh Market French-Style Baguette",
+        "price": "1.25",
+        "store": "Walmart",
+        "tags": []
+    },    
+    {
+        "commonName": "baguette",
+        "brand": "Oakrun Breads",
+        "fullName": "Oakrun Breads Fresh Baguette",
+        "price": "2.39",
+        "store": "Walmart",
+        "tags": []
+    },
+    {
+        "commonName": "eggs",
+        "brand": "Selection",
+        "fullName": "Selection Large White Eggs",
+        "price": "3.09",
+        "store": "Metro",
+        "tags": []
+    },
+    {
+        "commonName": "eggs",
+        "brand": "Sunnyvale Farms",
+        "fullName": "Sunnyvale Farms Fresh Brown Eggs",
+        "price": "4.09",
+        "store": "Metro",
+        "tags": []
+    },
+    {
+        "commonName": "ground beef",
+        "brand": "Average Farms",
+        "fullName": "Average Farms Lean Ground Beef",
+        "price": "14.31",
+        "store": "Metro",
+        "tags": []
+    },
+    {
+        "commonName": "ground beef",
+        "brand": "Springvale Farms",
+        "fullName": "Springvale Grass Fed Lean Ground Beef",
+        "price": "17.60",
+        "store": "Metro",
+        "tags": []
+    },
+    {
+        "commonName": "baguette",
+        "brand": "Premiere Moisson",
+        "fullName": "Premiere Moisson Baguette",
+        "price": "3.49",
+        "store": "Metro",
+        "tags": []
+    },
+    {
+        "commonName": "baguette",
+        "brand": "Front Street Bakery",
+        "fullName": "Front Street Bakery Crispy Fresh Baguette",
+        "price": "3.39",
+        "store": "Metro",
+        "tags": []
+    }
+]
