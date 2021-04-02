@@ -25,9 +25,6 @@ def create_connection(db_file):
     return conn
 
 def create_purrdev_connection():
-    #db_path = Path("purrdev.db")
-    #dir_path = os.path.dirname(os.path.realpath(__file__))
-    #database = dir_path + r"\purrdev.db"
     return create_connection(get_purrdev_path())
 
 def create_table(conn, create_table_sql):
