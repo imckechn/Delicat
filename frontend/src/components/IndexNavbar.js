@@ -33,7 +33,7 @@ export class IndexNavbar extends React.Component {
             {loggedIn ?
               <>
               <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle aria-expanded={false} aria-haspopup={true} caret data-toggle="dropdown" nav onClick={(e) => e.preventDefault()} role="button" >
+                <DropdownToggle aria-expanded={false} aria-haspopup={true} data-toggle="dropdown" nav onClick={(e) => e.preventDefault()} role="button" >
                   <p className="navItem">
                     <i className="fa fa-user fa-2x"/>
                     Account

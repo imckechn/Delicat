@@ -8,7 +8,8 @@ import "assets/scss/paper-kit.scss?v=1.3.0";
 import "assets/css/style.css"
 // pages
 import {Homepage} from "./components/Homepage";
-import {NewListPage} from "components/NewListPage.js";
+import {NewListPage} from "./components/NewListPage";
+import {FlyerPage} from "./components/FlyerPage";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -16,6 +17,9 @@ ReactDOM.render(
       <Route exact path="/" render={(props) => <Homepage {...props} />} />
       <Route path="/new-list" 
         render={(props) => <NewListPage {...props} />}
+      />
+      <Route path="/flyer" 
+        render={(props) => <FlyerPage {...props} />}
       />
       <Redirect to="/" />
     </Switch>
