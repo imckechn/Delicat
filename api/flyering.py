@@ -3,10 +3,6 @@ import json
 import os
 import sys
 import sqlite3
-
-dir_path = os.path.dirname(os.path.realpath(__file__)) + r"\..\\"
-sys.path.append(dir_path)
-
 from db_test import create_purrdev_connection
 ### REPRESENTATIONS ###################################################
 # Data recieved from the frontend
@@ -24,6 +20,8 @@ class Filter:
         self.excluded_stores = fronted_filter.get("excluded_stores", [])
         self.distance_km = fronted_filter.get("distance_km", -1.0)
         self.location = fronted_filter.get("location", "")
+        self.items_per_store = fronted_filter.get("items_per_store", 1)
+        self.items_fav_store = fronted_filter.get("items_fav_store", 3)
 
 
 # Internal representation of the items
@@ -96,14 +94,9 @@ def get_flyer(frontend_list):
         records = []
 
         for store_set in store_records:
-            records = records + filter_by_value(store_set)
+            records = records + filter_by_value(store_set, internal_list.filters)
         
         flyer = flyer + records
-        # TODO Add DB record class
-    
-        # get from DB by name, excluded stores, brand, tags
-        # Filter by distance
-        # group results by store
     
     flyer = records_to_JSON_list(flyer)
 
@@ -120,13 +113,6 @@ def build_condition(general_condition,filter_list):
     return condition
 
 def query_db(item, filters):
-    # FIXME
-    """
-    Query tasks by priority
-    :param conn: the Connection object
-    :param priority:
-    :return:
-    """
     conn = create_purrdev_connection()
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
@@ -158,11 +144,17 @@ def group_by_store(records):
 
     return new_list
 
-def filter_by_value(records):
-    max = 3
+def filter_by_value(records, filters):
+    max = filters.items_per_store
+    if (len(records) and records[0].store in filters.favourite_stores ):
+        max = filters.items_fav_store
+
     records.sort(key=lambda item: item.price/item.amount if (item.price != 0 and item.amount != 0) else float('inf'))
-    new_list = records[:max]
-    return new_list
+
+    if(len(records) > max):
+        records = records[:max]
+
+    return records
 
 def records_to_JSON_list(flyer):
     json_list = []
@@ -172,73 +164,3 @@ def records_to_JSON_list(flyer):
     return json.dumps(json_list)
 
 ### END IMPLEMENTATION ###################################################
-
-### TESTS ################################################################
-class Empty:
-    def __init__(self):
-        self = self
-    
-    def print_self(self):
-        print(self.__dict__)
-
-def run_tests():
-    print("STARTING TESTS")
-    test_group_by_store()
-    test_filter_by_value()
-    test_records_to_JSON()
-    test_query_item()
-    test_get_flyer()
-    print("FINISHED TESTS")
-
-def test_group_by_store():
-    records = []
-    for x in range(0, 15):
-        temp = Empty()
-        temp.store = x % 3
-        temp.other = x
-        temp.print_self()
-        print(temp)
-        records.append(temp)
-
-    records = group_by_store(records)
-
-    for group in records:
-        print("[")
-        for item in group:
-            item.print_self()
-        print("],")
-
-def test_filter_by_value():
-    records = []
-    for i in range(0, 100):
-        for j in range(0, 100):
-            temp = Empty()
-            temp.amount = i
-            temp.price = 100 - j
-            records.append(temp)
-    
-    records = filter_by_value(records)
-    for item in records:
-        item.print_self()
-
-def test_records_to_JSON():
-    temp = Record({})
-    temp = Record({"fullName":"bob"})
-    records = records_to_JSON_list([temp, temp])
-    print(records)
-
-def test_query_item():
-    item= List_Item({"name":"eggs"})
-    filters= Filter({})
-    rows = query_db(item, filters)
-    for row in rows:
-        print(row.__dict__)
-
-def test_get_flyer():
-    item_1 = {"name":"eggs","brands":["Selection"]}
-    item_2 = {"name":"ground beef","brands":["Average Farms"]}
-    response = get_flyer({"filters":{"excluded_stores":["Walmart"]}, "list_items":[item_1,item_2]})
-    print(response)
-
-#run_tests()
-### END TESTS ############################################################
