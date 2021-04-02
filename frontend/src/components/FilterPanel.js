@@ -2,7 +2,6 @@ import React from "react";
 import { TextField, ThemeProvider, createMuiTheme } from "@material-ui/core";
 import GetStoreFilters from './hooks/GetStoreFilters';
 import GetDistanceFilter from "./hooks/GetDistanceFilter";
-import { param } from "jquery";
 
 export class FilterPanel extends React.Component {
   constructor() {
