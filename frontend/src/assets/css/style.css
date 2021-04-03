@@ -98,3 +98,14 @@
 .grey-bg {
     background-color: #e7e7e7;
 }
+
+.pdf-format {
+    max-width: 210mm;
+    min-height: 297mm;
+    font-size: 10px;
+    border-bottom: 1px solid #333333 ;
+}
+
+.hidden {
+    display: none;
+}

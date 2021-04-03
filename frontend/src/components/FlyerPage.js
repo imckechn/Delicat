@@ -1,6 +1,7 @@
 import React from "react";
 import { IndexNavbar } from "./IndexNavbar";
 import { FlyerItem } from "./FlyerItem";
+import { PDF } from "./PDF";
 import { Container, Button } from "reactstrap";
 import { Grid } from "@material-ui/core";
 import { jsPDF } from "jspdf";
@@ -49,16 +50,19 @@ export class FlyerPage extends React.Component {
         <IndexNavbar />
         <div className="below-nav"></div>
         <h2 className="center add-padding">Flyer</h2>
-        <Container id="flyerContainer" className="grey-bg">
+        <Container className="grey-bg">
           <Grid container spacing={3} >
             {this.state.flyerItem.map((item, index) => (
               <FlyerItem key={"item"+index}item={item} />
             ))}
           </Grid>
         </Container>
+        <Container id="flyerContainer">
+          <PDF list={this.state.flyerItem} />
+        </Container>
         <div className="fixed-bottom"> 
           <Container className="center white-bg add-padding">
-            <Button className="footer-button-space" color="success">Email Flyer</Button>
+            <Button className="footer-button-space" color="success" href={"mailto:aschropp@uoguelph.ca?subject=Testing out mailto!&body=This is only a test!"}>Email Flyer</Button>
             <Button color="success" onClick={this.convertToPDF}>Save as PDF</Button>
           </Container>
         </div>
