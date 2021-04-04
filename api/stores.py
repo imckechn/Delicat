@@ -5,12 +5,16 @@ import sys
 import sqlite3
 from test_db import create_purrdev_connection, ensure_db
 
+class Record:
+    def __init__(self, db_record):
+        self.store = db_record.get("store", "")
+
 # Function to get all the unique stores from the database
 # Returns a list of all the elements
 def list_all_stores():
     ensure_db
     conn = create_purrdev_connection()
-    conn.row_factory = sqlite3.row
+    conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     select_statement = "SELECT DISTINCT store FROM products;"
     
