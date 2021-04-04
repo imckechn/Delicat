@@ -6,6 +6,7 @@ import flask
 from flask import request
 import json
 from flyering import get_flyer
+from stores import list_all_stores
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -14,6 +15,10 @@ app.config["DEBUG"] = True
 def optimize_list():
     shopping_list = request.get_json().get('shopping_list', {})
     return json.dumps(get_flyer(shopping_list))
+
+@app.route('/stores', methods=['POST'])
+def get_stores():
+    return json.dumps(list_all_stores())
 
 if __name__ == '__main__':
     app.run()
