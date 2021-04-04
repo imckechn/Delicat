@@ -33,26 +33,28 @@ export class FlyerPage extends React.Component {
     }
   }
 
+  // Toggles state of email modal
   toggleEmail = () => {
     this.setState({emailModal: !this.state.emailModal});
   }
 
+  // Closes email modal and passes email to /email endpoint
   sendEmail = () => {
     this.toggleEmail();
     console.log("Sending to " + this.state.email); //Replace this with sending the email to the /email endpoint
   }
 
+  // Sets the email state
   handleEmail = (val) => {
     this.setState({email: val.target.value});
   }
 
+  // Toggles state of pdf modal
   togglePDF = () => {
     this.setState({pdfPreviewModal: !this.state.pdfPreviewModal});
   }
 
   // Take nested react components and converts them into an image then saves the image as a pdf
-  // TO DO
-  // Fix the whack formatting of the downloaded pdf.
   convertToPDF = () => {
     const input = document.getElementById('flyerContainer');
     html2canvas(input)
@@ -62,7 +64,7 @@ export class FlyerPage extends React.Component {
         pdf.addImage(imgData, 'JPEG', 0, 0);
         pdf.save("flyer.pdf");
       });
-    this.togglePDF();
+    this.togglePDF(); // Close modal when finished
   }
 
   render() {
