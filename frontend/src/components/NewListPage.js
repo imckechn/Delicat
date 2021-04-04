@@ -15,7 +15,7 @@ export class NewListPage extends React.Component {
       saved: false,
       editTitle: false,
       listName: "New List",
-      userList: [],
+      list_items: [],
       filters: [],
     }
   }
@@ -37,24 +37,24 @@ export class NewListPage extends React.Component {
 
   // Packaging up list data provided by user
   sendListItemInfo = async (val) => {
-    if (this.state.userList.length < val.itemID - 1) {
+    if (this.state.list_items.length < val.itemID - 1) {
       // Add it to array
       this.setState( currentState => ( {
-        userList: [ ...currentState.userList, val ]
+        list_items: [ ...currentState.list_items, val ]
       }));
     } else {
       // Copy state
-      let userList = [...this.state.userList];
+      let list_items = [...this.state.list_items];
       // Update state
       let item = {
-        ...userList[val.itemID],
+        ...list_items[val.itemID],
         commonName: val.commonName,
         tags: val.tags,
         amount: val.amount,
         brand: val.brand
     }
-    userList[val.itemID] = item;
-    this.setState({userList});
+    list_items[val.itemID] = item;
+    this.setState({list_items});
     }
   }
 
@@ -67,7 +67,7 @@ export class NewListPage extends React.Component {
   // TO DO
   // Send data to backend
   toJson = () => {
-    let data = [this.state.filters, this.state.userList];
+    let data = {"filters":this.state.filters, "list_items": this.state.list_items};
     let test = JSON.stringify(data);
     console.log(test); //Remove this later
     /*

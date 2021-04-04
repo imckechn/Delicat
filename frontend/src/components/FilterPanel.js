@@ -8,9 +8,9 @@ export class FilterPanel extends React.Component {
     super();
     this.state = {
       isPanelOpen: true,
-      favStores: [],
-      excludeStores: [],
-      postalCode: '',
+      fav_stores: [],
+      excluded_stores: [],
+      postal_code: '',
     }
   }
 
@@ -24,15 +24,15 @@ export class FilterPanel extends React.Component {
   // Parses and saves store info from filter
   saveStoreInfo = (val) => {
     this.setState ({
-      favStores: val.favStores,
-      excludeStores: val.excludedStores
+      fav_stores: val.favStores,
+      excluded_stores: val.excludedStores
     }, this.sendData);
   }
 
   // Updates entered postal code
   setPostal = (event) => {
     this.setState ({
-      postalCode: event.target.value
+      postal_code: event.target.value
     }, this.sendData);
   }
 
