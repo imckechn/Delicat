@@ -18,18 +18,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function GetStoreFilters() {
+export default function GetStoreFilters({storeCallback}) {
   const classes = useStyles();
   const stores = ["Walmart", "Zehrs"];
   const [favStoreName, setFavStoreName] = React.useState([]);
   const [excludeStoreName, setExcludeStoreName] = React.useState([]);
 
+  // Sets favourite store state and sends that information back to parent class (FilterPanel.js)
   const handleFavChange = (event) => {
     setFavStoreName(event.target.value);
+    let favList = {"favStores": event.target.value, "excludedStores": excludeStoreName};
+    storeCallback(favList);
   };
 
+  // Sets excluded store state and sends that information back to parent class (FilterPanel.js)
   const handleExcludeChange = (event) => {
     setExcludeStoreName(event.target.value);
+    let excludedList = {"favStores": favStoreName, "excludedStores": event.target.value};
+    storeCallback(excludedList);
   };
 
   return (

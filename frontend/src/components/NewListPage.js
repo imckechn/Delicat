@@ -15,6 +15,8 @@ export class NewListPage extends React.Component {
       saved: false,
       editTitle: false,
       listName: "New List",
+      userList: [],
+      filters: [],
     }
   }
 
@@ -33,10 +35,64 @@ export class NewListPage extends React.Component {
     this.setState({listName: val.target.value});
   }
 
+  // Packaging up list data provided by user
+  sendListItemInfo = async (val) => {
+    if (this.state.userList.length < val.itemID - 1) {
+      // Add it to array
+      this.setState( currentState => ( {
+        userList: [ ...currentState.userList, val ]
+      }));
+    } else {
+      // Copy state
+      let userList = [...this.state.userList];
+      // Update state
+      let item = {
+        ...userList[val.itemID],
+        commonName: val.commonName,
+        tags: val.tags,
+        amount: val.amount,
+        brand: val.brand
+    }
+    userList[val.itemID] = item;
+    this.setState({userList});
+    }
+  }
+
+  // Packageing up filter data provided by user
+  sendFilterInfo = async (val) => {
+    this.setState({filters: val});
+  }
+
+  // Converting data provided by user into JSON string
+  // TO DO
+  // Send data to backend
+  toJson = () => {
+    let data = [this.state.filters, this.state.userList];
+    let test = JSON.stringify(data);
+    console.log(test); //Remove this later
+    /*
+    //copied from endpoint_sample.js for easy access
+    fetch('/optimize-list', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Success:', data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+    */
+  }
+
   render() {
     let itemInputs = [];
     for (let i = 0; i < this.state.numItems; i++) {
-      itemInputs.push(<ListItem key={"item" + i}/>);
+      itemInputs.push(<ListItem key={"item" + i} onListItemCallback={this.sendListItemInfo} itemID={i}/>);
     }
     const theme = createMuiTheme({
       palette: {
@@ -60,7 +116,7 @@ export class NewListPage extends React.Component {
         <Grid container spacing={3}>
           <Grid item xs={3}>
             <Container>
-              <FilterPanel />
+              <FilterPanel filterCallback={this.sendFilterInfo}/>
             </Container>
           </Grid>
           <Grid item xs={6}>
@@ -105,13 +161,13 @@ export class NewListPage extends React.Component {
         <div className="fixed-bottom"> 
           <Container className="center white-bg add-padding">
             <Button className="footer-button-space" color="success" onClick={() => {this.setState({ saved: true})}}>Save List</Button>
-            <Button color="success" href="/flyer">Generate Flyer</Button>
+            <Button color="success" onClick={() => {console.log("clicked")}}>Generate Flyer</Button>
           </Container>
         </div>
         :
         <div className="fixed-bottom"> 
           <Container className="center white-bg add-padding">
-            <Button className="btn" color="success" href="/flyer">Generate Flyer</Button>
+            <Button className="btn" color="success" onClick={this.toJson}>Generate Flyer</Button>
           </Container>
         </div>
         }

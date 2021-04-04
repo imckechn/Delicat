@@ -8,13 +8,37 @@ export class FilterPanel extends React.Component {
     super();
     this.state = {
       isPanelOpen: true,
+      favStores: [],
+      excludeStores: [],
+      postalCode: '',
     }
   }
 
+  // Opens/closes filter panel
   toggle = () => {
     this.setState ({
       isPanelOpen: !this.state.isPanelOpen
     });
+  }
+
+  // Parses and saves store info from filter
+  saveStoreInfo = (val) => {
+    this.setState ({
+      favStores: val.favStores,
+      excludeStores: val.excludedStores
+    }, this.sendData);
+  }
+
+  // Updates entered postal code
+  setPostal = (event) => {
+    this.setState ({
+      postalCode: event.target.value
+    }, this.sendData);
+  }
+
+  // Send data back to parent (NewListPage.js)
+  sendData = () => {
+    this.props.filterCallback(this.state);
   }
 
   render() {
@@ -38,12 +62,12 @@ export class FilterPanel extends React.Component {
             <i className="fa fa-chevron-left fa-lg" color="default" onClick={this.toggle} ></i>
             <br></br>
             <h3>Filters</h3>
-            <GetStoreFilters/>
+            <GetStoreFilters storeCallback={this.saveStoreInfo}/>
             <form id="postal" noValidate autoComplete="off">
-              <TextField  label="Postal Code" />
+              <TextField label="Postal Code" onChange={this.setPostal}/>
             </form>
             <br></br>
-            <GetDistanceFilter/>
+            <GetDistanceFilter distanceCallback={this.saveDistanceInfo}/>
           </div>
           :
           <>
