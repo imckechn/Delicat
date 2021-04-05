@@ -94,3 +94,16 @@
 .flyer-paper {
     text-align: center;
 }
+
+.grey-bg {
+    background-color: #e7e7e7;
+}
+
+.pdf-format {
+    max-width: 210mm;
+    font-size: 10px;
+}
+
+.hidden {
+    display: none;
+}

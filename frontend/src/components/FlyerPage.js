@@ -1,8 +1,11 @@
 import React from "react";
 import { IndexNavbar } from "./IndexNavbar";
 import { FlyerItem } from "./FlyerItem";
-import { Container } from "reactstrap";
-import { Grid } from "@material-ui/core";
+import { PDF } from "./PDF";
+import { Container, Button, Modal, ModalBody, ModalFooter } from "reactstrap";
+import { Grid, createMuiTheme, TextField, ThemeProvider } from "@material-ui/core";
+import { jsPDF } from "jspdf";
+import * as html2canvas from "html2canvas";
 
 export class FlyerPage extends React.Component {
   constructor(props) {
@@ -23,32 +26,108 @@ export class FlyerPage extends React.Component {
         "price": "3.09",
         "store": "Zehrs",
         "tags": []
-      },
-      {
-        "commonName": "eggs",
-        "brand": "No Name",
-        "fullName": "No Name Grade A Large Eggs",
-        "price": "3.09",
-        "store": "Zehrs",
-        "tags": []
       }],
+      emailModal: false,
+      email: '', //Obtain this automatically when logged in
+      pdfPreviewModal: false,
     }
   }
 
+  // Toggles state of email modal
+  toggleEmail = () => {
+    this.setState({emailModal: !this.state.emailModal});
+  }
+
+  // Closes email modal and passes email to /email endpoint
+  sendEmail = () => {
+    this.toggleEmail();
+    console.log("Sending to " + this.state.email); //Replace this with sending the email to the /email endpoint
+  }
+
+  // Sets the email state
+  handleEmail = (val) => {
+    this.setState({email: val.target.value});
+  }
+
+  // Toggles state of pdf modal
+  togglePDF = () => {
+    this.setState({pdfPreviewModal: !this.state.pdfPreviewModal});
+  }
+
+  // Take nested react components and converts them into an image then saves the image as a pdf
+  convertToPDF = () => {
+    const input = document.getElementById('flyerContainer');
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, 'JPEG', 0, 0);
+        pdf.save("flyer.pdf");
+      });
+    this.togglePDF(); // Close modal when finished
+  }
+
   render() {
-    console.log(this.props.name)
+    const theme = createMuiTheme({
+      palette: {
+        primary: {
+          light: '#6bd098',
+          main: '#6bd098',
+          dark: '#28a745',
+          contrastText: '#fff',
+        },
+      },
+    });
     return (
       <>
         <IndexNavbar />
         <div className="below-nav"></div>
-        <Container>
-        <h2>Flyer</h2>
-        <Grid container spacing={3}>
-          {this.state.flyerItem.map((item, index) => (
-            <FlyerItem key={`${index}-${item}`} item={item} />
-          ))}
-        </Grid>
+        <h2 className="center add-padding">Flyer</h2>
+        <Container className="grey-bg">
+          <Grid container spacing={3} >
+            {this.state.flyerItem.map((item, index) => (
+              <FlyerItem key={"item"+index}item={item} />
+            ))}
+          </Grid>
         </Container>
+        <Modal isOpen={this.state.emailModal} toggle={this.toggleEmail}>
+          <ModalBody>
+            <h3><b>Enter in your email so we can send you your list!</b></h3>
+            <ThemeProvider theme={theme}>
+              <TextField
+                label="Email"
+                type="email"
+                value={this.state.email}
+                placeholder="example@delicat.com"
+                onChange={this.handleEmail}
+                fullWidth
+                margin="normal"
+              />
+            </ThemeProvider>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="success" onClick={this.sendEmail}>Confirm Email</Button>
+            <Button color="default" outline onClick={this.toggleEmail}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+        <Modal isOpen={this.state.pdfPreviewModal} toggle={this.togglePDF}>
+          <ModalBody>
+            <h3><b>PDF Preview</b></h3>
+            <Container id="flyerContainer">
+              <PDF list={this.state.flyerItem} />
+            </Container>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="success" onClick={this.convertToPDF}>Download</Button>
+            <Button color="default" outline onClick={this.togglePDF}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+        <div className="fixed-bottom"> 
+          <Container className="center white-bg add-padding">
+            <Button className="footer-button-space" color="success" onClick={this.toggleEmail}>Email Flyer</Button>
+            <Button color="success" onClick={this.togglePDF}>Save as PDF</Button>
+          </Container>
+        </div>
       </>
     );
   }
