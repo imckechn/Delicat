@@ -18,6 +18,7 @@ export class NewListPage extends React.Component {
       list_items: [],
       filters: [],
     }
+    this.test = "boo";
   }
 
   // Keeps track of how many list items to display
@@ -64,28 +65,68 @@ export class NewListPage extends React.Component {
   }
 
   // Converting data provided by user into JSON string
-  // TO DO
-  // Send data to backend
-  toJson = () => {
-    let data = {"filters":this.state.filters, "list_items": this.state.list_items};
-    let test = JSON.stringify(data);
-    console.log(test); //Remove this later
-    /*
-    //copied from endpoint_sample.js for easy access
-    fetch('/optimize-list', {
+  // Sends data to backend and gets a response.
+  // NOTE: this method is aysnc
+  toJson = async () => {
+    // Convert from frontend filters to backend filters
+    let filters = {
+        "favourite_stores": this.state.filters["fav_stores"],
+        "excluded_stores": this.state.filters["excluded_stores"],
+        //"distance_km": this.state.filters["distance"],  // Uncomment this if you want to set distance: the backend won't do anything with it, but it won't break
+        //"location": this.state.filters["location"],     // Uncomment this if you want to set location: the backend won't do anything with it, but it won't break
+        "items_per_store": 1,   // Change the value here if you want more items for regular stores
+        "items_fav_store": 3    // Change the value here if you want more items for favourite stores
+    }
+
+    // Convert from frontend list_items to backend list_items
+    let list_items =[]
+    this.state.list_items.forEach(item => {
+      list_items.push({
+        name: item["commonName"],
+        amount: item["amount"],
+        brands: item["brand"]? [item["brand"]] : [],  // Note: brand is treated as brands[] (an array) on the backend.
+                                                      // so you can add more than one brand.
+                                                      // Also, it's "No Name" with a space in the DB, not "NoName"
+                                                      // The /brands endpoint should handle that, though.
+        tags: item["tags"]
+      });
+    });
+
+    let args = {shopping_list: {filters:filters, list_items: list_items}};
+
+    // Endpoint to get the flyer: puts everything into <<flyer_response>>
+    // NOTE: this is inherently asynchronous, so you will have to await it
+    // if you want to be sure the promise is resolved. We await it here
+    // (and thus make this method async ^^^) for demonstration purposes.
+    let flyer_response = await fetch('/optimize-list', {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(args),
     })
     .then(response => response.json())
     .then(data => {
-      console.log('Success:', data);
+      return data;
     })
     .catch((error) => {
       console.error('Error:', error);
     });
+
+    // Log the response, for demo purposes.
+    console.log(flyer_response);
+    // The response is an array of objects, each of the form:
+    /* 
+      {
+        "common_name": "eggs",
+        "brand": "Selection",
+        "full_name": "Selection Large White Eggs",
+        "price": 3.09,
+        "store": "Metro",
+        "tags": "[]",
+        "location": "",
+        "amount": 1.0
+      }
     */
   }
 
