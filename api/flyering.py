@@ -103,14 +103,13 @@ def get_flyer(frontend_list):
 
     return flyer
 
-def build_condition(general_condition,filter_list):
+def build_condition(general_condition, operator ,filter_list):
     condition = ""
     if (filter_list):
         condition = general_condition
         for i in range(1, len(filter_list)):
-            condition = condition + "OR" + general_condition
-        condition = "AND (" + condition + ") "
-
+            condition = condition + " " + operator + " " + general_condition
+        condition = " AND (" + condition + ") "
     return condition
 
 def query_db(item, filters):
@@ -119,7 +118,7 @@ def query_db(item, filters):
     cur = conn.cursor()
     #name, excluded stores, brand, tags, amount?
     select_statment = "SELECT * FROM products WHERE (commonName=?"
-    select_statment = select_statment + build_condition("brand=?", item.brands) + build_condition("store!=?", filters.excluded_stores) + build_condition("tags=?", item.tags) + ")"
+    select_statment = select_statment + build_condition("brand=?", "OR", item.brands) + build_condition("store!=?", "AND", filters.excluded_stores) + build_condition("tags=?", "OR", item.tags) + ")"
     params = tuple([item.name] + item.brands + filters.excluded_stores + item.tags)
 
     cur.execute(select_statment, params)
