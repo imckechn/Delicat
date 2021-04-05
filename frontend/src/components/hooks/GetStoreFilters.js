@@ -59,6 +59,9 @@ export default function GetStoreFilters({storeCallback}) {
     for (let i = 0; i < parsed.length; i++) {
       stores.push(parsed[i].store);
     }
+    // Sorts list alphabetically
+    stores.sort();
+    
     // Updates the list of all stores
     setStores(stores);
   }
