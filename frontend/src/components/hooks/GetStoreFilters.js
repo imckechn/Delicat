@@ -18,26 +18,49 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function GetStoreFilters({storeCallback}) {
+export default function GetStoreFilters() {
   const classes = useStyles();
-  const stores = ["Walmart", "Zehrs"];
   const [favStoreName, setFavStoreName] = React.useState([]);
   const [excludeStoreName, setExcludeStoreName] = React.useState([]);
 
-  // Sets favourite store state and sends that information back to parent class (FilterPanel.js)
+  // Updates favourite store list
   const handleFavChange = (event) => {
     setFavStoreName(event.target.value);
-    let favList = {"favStores": event.target.value, "excludedStores": excludeStoreName};
-    storeCallback(favList);
   };
 
-  // Sets excluded store state and sends that information back to parent class (FilterPanel.js)
+  // Updates excluded store list
   const handleExcludeChange = (event) => {
     setExcludeStoreName(event.target.value);
-    let excludedList = {"favStores": favStoreName, "excludedStores": event.target.value};
-    storeCallback(excludedList);
   };
 
+  // Get list of stores from api
+  const getStores = async () => {
+    let stores = [];
+    let response = await fetch('/stores', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      return data;
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+
+    // Parses returned response into array of strings
+    let parsed = JSON.parse(response);
+    for (let i = 0; i < parsed.length; i++) {
+      stores.push(parsed[i].store);
+    }
+    // Updates the list of all stores
+    setStores(stores);
+  }
+
+  const [stores, setStores] = React.useState(getStores());
+  
   return (
     <div>
       <FormControl className={classes.formControl}>
@@ -54,7 +77,7 @@ export default function GetStoreFilters({storeCallback}) {
               ))}
             </div>
           )}>
-          {stores.map((stores) => (
+          {stores.length > 0 && stores.map((stores) => (
             <MenuItem key={stores} value={stores}>
               {stores}
             </MenuItem>
@@ -76,7 +99,7 @@ export default function GetStoreFilters({storeCallback}) {
               ))}
             </div>
           )}>
-          {stores.map((stores) => (
+          {stores.length > 0 && stores.map((stores) => (
             <MenuItem key={stores} value={stores}>
               {stores}
             </MenuItem>
