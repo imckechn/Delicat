@@ -86,8 +86,6 @@ export class NewListPage extends React.Component {
         amount: item["amount"],
         brands: item["brand"]? [item["brand"]] : [],  // Note: brand is treated as brands[] (an array) on the backend.
                                                       // so you can add more than one brand.
-                                                      // Also, it's "No Name" with a space in the DB, not "NoName"
-                                                      // The /brands endpoint should handle that, though.
         tags: item["tags"]
       });
     });
