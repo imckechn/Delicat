@@ -11,22 +11,7 @@ export class FlyerPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      flyerItem: [{
-        "commonName": "eggs",
-        "brand": "PC Organics",
-        "fullName": "PC Organics Free-Range Brown Eggs",
-        "price": "6.79",
-        "store": "Zehrs",
-        "tags": []
-      },
-      {
-        "commonName": "eggs",
-        "brand": "No Name",
-        "fullName": "No Name Grade A Large Eggs",
-        "price": "3.09",
-        "store": "Zehrs",
-        "tags": []
-      }],
+      flyerItem: this.props.location.state.flyer_data, // Store the passed data sent from NewListPage.js (Func: sendListData();)
       emailModal: false,
       email: '', //Obtain this automatically when logged in
       pdfPreviewModal: false,
@@ -85,7 +70,7 @@ export class FlyerPage extends React.Component {
         <h2 className="center add-padding">Flyer</h2>
         <Container className="grey-bg">
           <Grid container spacing={3} >
-            {this.state.flyerItem.map((item, index) => (
+            {this.state.flyerItem != null && this.state.flyerItem.map((item, index) => (
               <FlyerItem key={"item"+index}item={item} />
             ))}
           </Grid>

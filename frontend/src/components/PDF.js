@@ -13,11 +13,11 @@ export class PDF extends React.Component {
       <div className="pdf-format">
           {this.props.list.map((item, index) => (
               <Card key={"pdfItem"+index}>
-                <b>{index+1}. {item.fullName}</b>
+                <b>{index+1}. {item.full_name}</b>
                 <br></br>
                 {item.brand} - {item.store}
                 <br></br>
-                Address
+                {item.location}
                 <br></br>
                 <b>${item.price}</b>
               </Card>

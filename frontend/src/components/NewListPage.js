@@ -17,8 +17,10 @@ export class NewListPage extends React.Component {
       listName: "New List",
       list_items: [],
       filters: [],
+      redirect: false,
+      flyer_data: [],
     }
-    this.test = "boo";
+    this.test = "aH!";
   }
 
   // Keeps track of how many list items to display
@@ -111,21 +113,30 @@ export class NewListPage extends React.Component {
       console.error('Error:', error);
     });
 
-    // Log the response, for demo purposes.
-    console.log(flyer_response);
-    // The response is an array of objects, each of the form:
-    /* 
-      {
-        "common_name": "eggs",
-        "brand": "Selection",
-        "full_name": "Selection Large White Eggs",
-        "price": 3.09,
-        "store": "Metro",
-        "tags": "[]",
-        "location": "",
-        "amount": 1.0
+    // Handles when the fetch has been completed
+    if (flyer_response) {
+      // Parse the JSON
+      let flyer = [];
+      let parsed = JSON.parse(flyer_response);
+      for (let i = 0; i < parsed.length; i++) {
+        flyer.push(parsed[i]);
       }
-    */
+      // Set state to allow for redirection
+      this.setState({
+        redirect: true,
+        flyer_data: flyer,
+      }, this.sendListData)
+    }
+  }
+
+  // Sends the list data recieved from the backend over to the FlyerPage.js
+  sendListData = () => {
+    this.props.history.push({
+      pathname:"/flyer",
+      state:{
+        flyer_data: this.state.flyer_data
+       }
+     });
   }
 
   render() {

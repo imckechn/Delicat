@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Input, InputLabel, MenuItem, FormControl, Select, Chip } from '@material-ui/core';
 import { makeStyles} from '@material-ui/core/styles';
 
@@ -20,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GetStoreFilters({storeCallback}) {
   const classes = useStyles();
+  const isMountedComponent = useRef(true);
+  const [stores, setStores] = React.useState([]);
   const [favStoreName, setFavStoreName] = React.useState([]);
   const [excludeStoreName, setExcludeStoreName] = React.useState([]);
 
@@ -61,12 +63,18 @@ export default function GetStoreFilters({storeCallback}) {
     }
     // Sorts list alphabetically
     stores.sort();
-    
+
     // Updates the list of all stores
     setStores(stores);
   }
 
-  const [stores, setStores] = React.useState(getStores());
+  // Function ensures that once the stores are set, it does not constantly try and update it.
+  useEffect(() => { 
+    if (isMountedComponent.current) {
+      setStores(getStores());
+      isMountedComponent.current = false;
+    }     
+  }, []);
   
   return (
     <div>
