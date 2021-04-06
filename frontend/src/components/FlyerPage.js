@@ -39,9 +39,32 @@ export class FlyerPage extends React.Component {
   }
 
   // Closes email modal and passes email to /email endpoint
-  sendEmail = () => {
+  sendEmail = async () => {
     this.toggleEmail();
+
     console.log("Sending to " + this.state.email); //Replace this with sending the email to the /email endpoint
+    let args = {
+      email_address: this.state.email, 
+      flyer_pdf: undefined, // Put PDF attachment here
+      body: "Main Flyer Text goes here",
+      subject: "Subject line goes here"
+    };
+    
+    fetch('/email', {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(args),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      return data;
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
   }
 
   // Sets the email state
@@ -57,6 +80,7 @@ export class FlyerPage extends React.Component {
   // Take nested react components and converts them into an image then saves the image as a pdf
   convertToPDF = () => {
     const input = document.getElementById('flyerContainer');
+    console.log(input);
     html2canvas(input)
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
