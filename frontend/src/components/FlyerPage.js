@@ -53,12 +53,18 @@ export class FlyerPage extends React.Component {
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      this.setState({sentEmail: true});
+      this.setState({
+        sentEmail: true,
+        declineEmail: false,
+      });
       return data;
     })
     .catch((error) => {
       console.error('Error:', error);
-      this.setState({declineEmail: true});
+      this.setState({
+        sentEmail: false,
+        declineEmail: true,
+      });
     });
   }
 
@@ -105,7 +111,7 @@ export class FlyerPage extends React.Component {
         <div className="below-nav"></div>
         <Collapse in={this.state.sentEmail}>
           <Alert action={<Button className="btn-link" color="success"><i className="fa fa-times" onClick={() => {this.setState({sentEmail: false})}}></i></Button>}>
-            Successfully Email List!
+            Successfully Emailed List!
           </Alert>
         </Collapse>
         <Collapse in={this.state.declineEmail}>
