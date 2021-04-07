@@ -107,3 +107,8 @@
 .hidden {
     display: none;
 }
+
+.input-feedback {
+    color: white;
+    font-size: 14px;
+}
