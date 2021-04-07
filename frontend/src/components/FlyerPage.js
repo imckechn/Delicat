@@ -129,7 +129,7 @@ export class FlyerPage extends React.Component {
         </Container>
         <Modal isOpen={this.state.emailModal} toggle={this.toggleEmail}>
           <ModalBody>
-            <h3><b>Enter in your email so we can send you your list!</b></h3>
+            <h3><b>Enter in your email so we can send you your flyer!</b></h3>
             <ThemeProvider theme={theme}>
               <TextField
                 label="Email"
