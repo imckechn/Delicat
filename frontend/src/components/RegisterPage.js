@@ -62,6 +62,8 @@ export class RegisterPage extends React.Component {
 									console.log("Registering Account", values);
 									setSubmitting(false);
 								}, 500);
+
+								this.props.history.push('/login');
 								/*db.transaction((tx) => {
 									const sql = `SELECT * FROM users WHERE email='${this.props.values.email}'`;
 									tx.executeSql(sql, [], (tx, results) => {
