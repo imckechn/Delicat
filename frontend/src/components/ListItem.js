@@ -106,7 +106,7 @@ export class ListItem extends React.Component {
                     fullWidth
                   >
                     <option aria-label="None" value="" />
-                    <option value="NoName">NoName</option>
+                    <option value="NoName">No Name</option>
                     <option value="President's Choice">President's Choice</option>
                   </Select>
                 </FormControl>

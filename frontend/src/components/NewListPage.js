@@ -11,14 +11,16 @@ export class NewListPage extends React.Component {
     super();
     this.state = {
       numItems: 1,
-      loggedIn: false,
+      loggedIn: true,
       saved: false,
       editTitle: false,
       listName: "New List",
       list_items: [],
       filters: [],
+      redirect: false,
+      flyer_data: [],
     }
-    this.test = "boo";
+    this.test = "aH!";
   }
 
   // Keeps track of how many list items to display
@@ -86,8 +88,6 @@ export class NewListPage extends React.Component {
         amount: item["amount"],
         brands: item["brand"]? [item["brand"]] : [],  // Note: brand is treated as brands[] (an array) on the backend.
                                                       // so you can add more than one brand.
-                                                      // Also, it's "No Name" with a space in the DB, not "NoName"
-                                                      // The /brands endpoint should handle that, though.
         tags: item["tags"]
       });
     });
@@ -113,21 +113,30 @@ export class NewListPage extends React.Component {
       console.error('Error:', error);
     });
 
-    // Log the response, for demo purposes.
-    console.log(flyer_response);
-    // The response is an array of objects, each of the form:
-    /* 
-      {
-        "common_name": "eggs",
-        "brand": "Selection",
-        "full_name": "Selection Large White Eggs",
-        "price": 3.09,
-        "store": "Metro",
-        "tags": "[]",
-        "location": "",
-        "amount": 1.0
+    // Handles when the fetch has been completed
+    if (flyer_response) {
+      // Parse the JSON
+      let flyer = [];
+      let parsed = JSON.parse(flyer_response);
+      for (let i = 0; i < parsed.length; i++) {
+        flyer.push(parsed[i]);
       }
-    */
+      // Set state to allow for redirection
+      this.setState({
+        redirect: true,
+        flyer_data: flyer,
+      }, this.sendListData)
+    }
+  }
+
+  // Sends the list data recieved from the backend over to the FlyerPage.js
+  sendListData = () => {
+    this.props.history.push({
+      pathname:"/flyer",
+      state:{
+        flyer_data: this.state.flyer_data
+       }
+     });
   }
 
   render() {
@@ -202,7 +211,7 @@ export class NewListPage extends React.Component {
         <div className="fixed-bottom"> 
           <Container className="center white-bg add-padding">
             <Button className="footer-button-space" color="success" onClick={() => {this.setState({ saved: true})}}>Save List</Button>
-            <Button color="success" onClick={() => {console.log("clicked")}}>Generate Flyer</Button>
+            <Button color="success" onClick={this.toJson}>Generate Flyer</Button>
           </Container>
         </div>
         :
