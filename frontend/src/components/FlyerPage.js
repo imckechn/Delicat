@@ -27,12 +27,19 @@ export class FlyerPage extends React.Component {
   sendEmail = async () => {
     this.toggleEmail();
 
+    let body_string = "";
+    this.state.flyerItem.forEach(item => {
+      body_string = body_string + item.full_name + "\n\t" + item.brand + " - " + item.store + "\n\t$"+ item.price + "\n\n";
+    });
+
+    console.log(body_string);
+
     console.log("Sending to " + this.state.email); //Replace this with sending the email to the /email endpoint
     let args = {
       email_address: this.state.email, 
       flyer_pdf: undefined, // Put PDF attachment here
-      body: "Main Flyer Text goes here",
-      subject: "Subject line goes here"
+      body: body_string,
+      subject: "Delicat Flyer"
     };
     
     fetch('/email', {
