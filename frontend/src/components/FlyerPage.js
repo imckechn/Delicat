@@ -16,6 +16,7 @@ export class FlyerPage extends React.Component {
       emailModal: false,
       email: '', //Obtain this automatically when logged in
       sentEmail: false,
+      declineEmail: false,
       pdfPreviewModal: false,
     }
   }
@@ -28,7 +29,6 @@ export class FlyerPage extends React.Component {
   // Closes email modal and passes email to /email endpoint
   sendEmail = async () => {
     this.toggleEmail();
-    this.setState({sentEmail: true});
 
     let body_string = "";
     this.state.flyerItem.forEach(item => {
@@ -53,10 +53,12 @@ export class FlyerPage extends React.Component {
     .then(response => response.json())
     .then(data => {
       console.log(data);
+      this.setState({sentEmail: true});
       return data;
     })
     .catch((error) => {
       console.error('Error:', error);
+      this.setState({declineEmail: true});
     });
   }
 
@@ -104,6 +106,11 @@ export class FlyerPage extends React.Component {
         <Collapse in={this.state.sentEmail}>
           <Alert action={<Button className="btn-link" color="success"><i className="fa fa-times" onClick={() => {this.setState({sentEmail: false})}}></i></Button>}>
             Successfully Email List!
+          </Alert>
+        </Collapse>
+        <Collapse in={this.state.declineEmail}>
+          <Alert severity="warning" action={<Button className="btn-link" color="danger"><i className="fa fa-times" onClick={() => {this.setState({declineEmail: false})}}></i></Button>}>
+            Invalid Email
           </Alert>
         </Collapse>
         <h2 className="center add-padding">Flyer</h2>
