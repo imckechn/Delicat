@@ -111,7 +111,7 @@ export class FlyerPage extends React.Component {
         <div className="below-nav"></div>
         <Collapse in={this.state.sentEmail}>
           <Alert action={<Button className="btn-link" color="success"><i className="fa fa-times" onClick={() => {this.setState({sentEmail: false})}}></i></Button>}>
-            Successfully Emailed List!
+            Successfully Emailed Flyer!
           </Alert>
         </Collapse>
         <Collapse in={this.state.declineEmail}>
