@@ -15,7 +15,7 @@ import {
 
 export class IndexNavbar extends React.Component {
   render() {
-    var loggedIn = true; //currently in place until we set up state for this
+    var loggedIn = false; //currently in place until we set up state for this
     return (
     <Navbar className="fixed-top" expand="lg" color="e7e7e7">
         <div className="navbar-translate">
@@ -64,7 +64,7 @@ export class IndexNavbar extends React.Component {
                 <Button className="btn" color="success" href="/login" outline>Log in</Button>
               </NavItem>
               <NavItem>
-                <Button className="btn" color="success" href="">Register</Button>
+                <Button className="btn" color="success" href="/register">Register</Button>
               </NavItem>
               </>
               }
