@@ -32,8 +32,6 @@ export class FlyerPage extends React.Component {
       body_string = body_string + item.full_name + "\n\t" + item.brand + " - " + item.store + "\n\t$"+ item.price + "\n\n";
     });
 
-    console.log(body_string);
-
     console.log("Sending to " + this.state.email); //Replace this with sending the email to the /email endpoint
     let args = {
       email_address: this.state.email, 
