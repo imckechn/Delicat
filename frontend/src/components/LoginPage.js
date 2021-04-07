@@ -77,21 +77,30 @@ export class LoginPage extends React.Component {
 									console.log("Logging in", values);
 									setSubmitting(false);
 								}, 500);
-								/*db.transaction((tx) => {
-									const sql = `SELECT * FROM users WHERE email='${this.props.values.email}'`;
-									tx.executeSql(sql, [], (tx, results) => {
-										const len = results.rows.length;
-										if(!len) {
-											alert('This account does not exist!');
-										} else {
-											const row = results.rows.item(0);
-											if(this.props.values.password === row.password) {
-												return <Redirect to='/' />
-											}
-											alert('Authentication failed!');
-										}
-									});
-								});*/
+
+								let args = {
+									email_address: values.email,
+									password: values.password
+								};
+								let info = JSON.stringify(args);
+								console.log("HEYYY" + info);
+
+								fetch('/login', {
+									method: 'POST',
+									headers: {
+										'Content-Type': 'application/json',
+									},
+									redirect: 'follow',
+									body: info,
+								})
+								.then(response => response.json())
+								.then(data => { //data is formatted as a json { validation: true/false }, true means logged in, false means not logged in
+									console.log(data);
+									return data;
+								})
+								.catch((error) => {
+									console.error('Error: ', error);
+								});
 							}}
 						>
 
