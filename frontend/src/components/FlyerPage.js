@@ -3,7 +3,8 @@ import { IndexNavbar } from "./IndexNavbar";
 import { FlyerItem } from "./FlyerItem";
 import { PDF } from "./PDF";
 import { Container, Button, Modal, ModalBody, ModalFooter } from "reactstrap";
-import { Grid, createMuiTheme, TextField, ThemeProvider } from "@material-ui/core";
+import { Grid, createMuiTheme, TextField, ThemeProvider, Collapse } from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
 import { jsPDF } from "jspdf";
 import * as html2canvas from "html2canvas";
 
@@ -14,6 +15,8 @@ export class FlyerPage extends React.Component {
       flyerItem: this.props.location.state.flyer_data, // Store the passed data sent from NewListPage.js (Func: sendListData();)
       emailModal: false,
       email: '', //Obtain this automatically when logged in
+      sentEmail: false,
+      declineEmail: false,
       pdfPreviewModal: false,
     }
   }
@@ -50,16 +53,26 @@ export class FlyerPage extends React.Component {
     .then(response => response.json())
     .then(data => {
       console.log(data);
+      this.setState({
+        sentEmail: true,
+        declineEmail: false,
+      });
       return data;
     })
     .catch((error) => {
       console.error('Error:', error);
+      this.setState({
+        sentEmail: false,
+        declineEmail: true,
+      });
     });
   }
 
   // Sets the email state
   handleEmail = (val) => {
-    this.setState({email: val.target.value});
+    this.setState({
+      email: val.target.value,
+    });
   }
 
   // Toggles state of pdf modal
@@ -96,6 +109,16 @@ export class FlyerPage extends React.Component {
       <>
         <IndexNavbar />
         <div className="below-nav"></div>
+        <Collapse in={this.state.sentEmail}>
+          <Alert action={<Button className="btn-link" color="success"><i className="fa fa-times" onClick={() => {this.setState({sentEmail: false})}}></i></Button>}>
+            Successfully Emailed Flyer!
+          </Alert>
+        </Collapse>
+        <Collapse in={this.state.declineEmail}>
+          <Alert severity="warning" action={<Button className="btn-link" color="danger"><i className="fa fa-times" onClick={() => {this.setState({declineEmail: false})}}></i></Button>}>
+            Invalid Email
+          </Alert>
+        </Collapse>
         <h2 className="center add-padding">Flyer</h2>
         <Container className="grey-bg">
           <Grid container spacing={3} >
@@ -106,7 +129,7 @@ export class FlyerPage extends React.Component {
         </Container>
         <Modal isOpen={this.state.emailModal} toggle={this.toggleEmail}>
           <ModalBody>
-            <h3><b>Enter in your email so we can send you your list!</b></h3>
+            <h3><b>Enter in your email so we can send you your flyer!</b></h3>
             <ThemeProvider theme={theme}>
               <TextField
                 label="Email"
