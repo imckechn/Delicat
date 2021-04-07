@@ -3,7 +3,8 @@ import { IndexNavbar } from "./IndexNavbar";
 import { FlyerItem } from "./FlyerItem";
 import { PDF } from "./PDF";
 import { Container, Button, Modal, ModalBody, ModalFooter } from "reactstrap";
-import { Grid, createMuiTheme, TextField, ThemeProvider } from "@material-ui/core";
+import { Grid, createMuiTheme, TextField, ThemeProvider, Collapse } from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
 import { jsPDF } from "jspdf";
 import * as html2canvas from "html2canvas";
 
@@ -14,6 +15,7 @@ export class FlyerPage extends React.Component {
       flyerItem: this.props.location.state.flyer_data, // Store the passed data sent from NewListPage.js (Func: sendListData();)
       emailModal: false,
       email: '', //Obtain this automatically when logged in
+      sentEmail: false,
       pdfPreviewModal: false,
     }
   }
@@ -26,6 +28,7 @@ export class FlyerPage extends React.Component {
   // Closes email modal and passes email to /email endpoint
   sendEmail = async () => {
     this.toggleEmail();
+    this.setState({sentEmail: true});
 
     let body_string = "";
     this.state.flyerItem.forEach(item => {
@@ -59,7 +62,9 @@ export class FlyerPage extends React.Component {
 
   // Sets the email state
   handleEmail = (val) => {
-    this.setState({email: val.target.value});
+    this.setState({
+      email: val.target.value,
+    });
   }
 
   // Toggles state of pdf modal
@@ -96,6 +101,11 @@ export class FlyerPage extends React.Component {
       <>
         <IndexNavbar />
         <div className="below-nav"></div>
+        <Collapse in={this.state.sentEmail}>
+          <Alert action={<Button className="btn-link" color="success"><i className="fa fa-times" onClick={() => {this.setState({sentEmail: false})}}></i></Button>}>
+            Successfully Email List!
+          </Alert>
+        </Collapse>
         <h2 className="center add-padding">Flyer</h2>
         <Container className="grey-bg">
           <Grid container spacing={3} >

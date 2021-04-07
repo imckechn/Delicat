@@ -17,8 +17,6 @@ export class PDF extends React.Component {
                 <br></br>
                 {item.brand} - {item.store}
                 <br></br>
-                {item.location}
-                <br></br>
                 <b>${item.price}</b>
               </Card>
           ))}     
