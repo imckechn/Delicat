@@ -61,7 +61,7 @@ export class IndexNavbar extends React.Component {
               :
               <>
               <NavItem>
-                <Button className="btn" color="success" href="" outline>Log in</Button>
+                <Button className="btn" color="success" href="/login" outline>Log in</Button>
               </NavItem>
               <NavItem>
                 <Button className="btn" color="success" href="">Register</Button>
