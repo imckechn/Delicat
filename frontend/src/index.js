@@ -10,7 +10,8 @@ import "assets/css/style.css"
 import {Homepage} from "./components/Homepage";
 import {NewListPage} from "./components/NewListPage";
 import {FlyerPage} from "./components/FlyerPage";
-import {LoginPage} from "./components/LoginPage"
+import {LoginPage} from "./components/LoginPage";
+import {RegisterPage} from "./components/RegisterPage";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -24,6 +25,9 @@ ReactDOM.render(
       />
       <Route path="/login" 
         render={(props) => <LoginPage {...props} />}
+      />
+      <Route path="/register" 
+        render={(props) => <RegisterPage {...props} />}
       />
       <Redirect to="/" />
     </Switch>
