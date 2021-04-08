@@ -18,7 +18,6 @@ export class RegisterPage extends React.Component {
 		  			dark: '#28a745',
 		  			contrastText: '#fff',
 				},
-				type: 'dark',
 			},
 		});
 
@@ -46,7 +45,7 @@ export class RegisterPage extends React.Component {
 				style={{backgroundImage:"url(" + require("assets/img/produce.jpg").default + ")",}}>
 				<div className="filter" />
 				<div className="content-center">
-					<Container>
+					<Container style={{backgroundColor: '#ffffff'}}>
 						<div className="login-info">
 						<Formik 
 							initialValues={{
@@ -85,33 +84,36 @@ export class RegisterPage extends React.Component {
 							{props => (
 								<form onSubmit={props.handleSubmit}>
 								<ThemeProvider theme={theme}>
-								<h1 className="title">Create an Account</h1>
-									{props.errors.first && props.touched.first && (
-										<div align="left" className="input-feedback">{props.errors.first}</div>
-									)}
+								<h1 className="login-reg-title">Create an Account</h1>
 									<TextField
 										id="first"
 										name="first"
 										label="First Name"
 										variant="outlined"
+										fullWidth
 										value={props.values.first}
 										onChange={props.handleChange}
 										onBlur={props.handleBlur}
 										className={props.errors.first && props.touched.first && "error"}
 									/>
-									<b>&nbsp;&nbsp;&nbsp;</b>
+									{props.errors.first && props.touched.first && (
+										<div className="input-feedback">{props.errors.first}</div>
+									)}
+									<br></br>
+									<br></br>
 									<TextField
 										id="last"
 										name="last"
 										label="Last Name"
 										variant="outlined"
+										fullWidth
 										value={props.values.last}
 										onChange={props.handleChange}
 										onBlur={props.handleBlur}
 										className={props.errors.last && props.touched.last && "error"}
 									/>
 									{props.errors.last && props.touched.last && (
-										<div align="right" className="input-feedback">{props.errors.last}</div>
+										<div className="input-feedback">{props.errors.last}</div>
 									)}
 									<br></br>
 									<br></br>
@@ -136,6 +138,7 @@ export class RegisterPage extends React.Component {
 										name="password"
 										label="Password"
 										variant="outlined"
+										type="password"
 										fullWidth
 										value={props.values.password}
 										onChange={props.handleChange}
@@ -152,6 +155,7 @@ export class RegisterPage extends React.Component {
 										name="confirmpassword"
 										label="Confirm Password"
 										variant="outlined"
+										type="password"
 										fullWidth
 										value={props.values.confirmpassword}
 										onChange={props.handleChange}
@@ -163,7 +167,7 @@ export class RegisterPage extends React.Component {
 									)}
 									<br></br>
 									<br></br>
-									<Button color="success" type="submit" disabled={props.isSubmitting}>Register</Button>
+									<Button className="center" color="success" type="submit" disabled={props.isSubmitting}>Register</Button>
 									<br></br>
 								</ThemeProvider>
 								</form>
