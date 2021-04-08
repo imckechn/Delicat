@@ -96,6 +96,11 @@ export class LoginPage extends React.Component {
 								.then(response => response.json())
 								.then(data => { //data is formatted as a json { validation: true/false }, true means logged in, false means not logged in
 									console.log(data);
+									if(data.validated === true){
+										this.props.history.push('/');
+									} else {
+										alert("Account information is incorrect! Please try again.")
+									}
 									return data;
 								})
 								.catch((error) => {
