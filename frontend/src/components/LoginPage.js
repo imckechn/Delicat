@@ -134,6 +134,7 @@ export class LoginPage extends React.Component {
 										name="password"
 										label="Password"
 										variant="outlined"
+										type="password"
 										fullWidth
 										value={props.values.password}
 										onChange={props.handleChange}
