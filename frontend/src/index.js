@@ -10,6 +10,7 @@ import "assets/css/style.css"
 import {Homepage} from "./components/Homepage";
 import {NewListPage} from "./components/NewListPage";
 import {FlyerPage} from "./components/FlyerPage";
+import {LoginPage} from "./components/LoginPage"
 
 ReactDOM.render(
   <BrowserRouter>
@@ -20,6 +21,9 @@ ReactDOM.render(
       />
       <Route path="/flyer" 
         render={(props) => <FlyerPage {...props} />}
+      />
+      <Route path="/login" 
+        render={(props) => <LoginPage {...props} />}
       />
       <Redirect to="/" />
     </Switch>

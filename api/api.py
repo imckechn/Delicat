@@ -8,9 +8,13 @@ import json
 from flyering import get_flyer
 from stores import list_all_stores
 from send_email import send_pdf_email
+from login import login
+from flask_cors import CORS, cross_origin
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+cors = CORS(app)
+app.config['CORS_HEADERS'] = "*"
 
 @app.route('/optimize-list', methods=['POST'])
 def optimize_list():
@@ -30,6 +34,14 @@ def send_flyer_email():
     print(request.get_json())
     send_pdf_email(email_address, flyer_pdf, body, subject)
     return json.dumps("Okay")
+    
+@app.route('/login', methods=['GET', 'POST', "OPTIONS"])
+@cross_origin()
+def login_verf():
+	error = None
+	email = request.get_json(force=True).get('email_address', None)
+	password = request.get_json(force=True).get('password', None)
+	return login(error, email, password)
 
 if __name__ == '__main__':
     app.run()

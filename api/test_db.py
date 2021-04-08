@@ -13,6 +13,9 @@ def get_purrdev_path():
 def get_data_path():
     return Path(get_dir_path() + "/data.json")
 
+def get_user_data_path():
+    return Path(get_dir_path() + "/user_data.json")
+
 def create_connection(db_file):
     """ create a database connection to a SQLite database """
     conn = None
@@ -47,6 +50,14 @@ def insert_product(conn, product):
     conn.commit()
     return cur.lastrowid
 
+def insert_user(conn, user):
+    sql = ''' INSERT INTO users(email,password)
+              VALUES(?,?) '''
+    cur = conn.cursor()
+    cur.execute(sql, user)
+    conn.commit()
+    return cur.lastrowid
+
 def prime_db():
     # Delete the DB if it already exists
     database = get_purrdev_path()
@@ -64,10 +75,18 @@ def prime_db():
                                         store text NOT NULL,
                                         tags text
                                     ); """
+
+    sql_create_users_table = """ CREATE TABLE IF NOT EXISTS users (
+                                    id integer PRIMARY KEY,
+                                    email text NOT NULL,
+                                    password text NOT NULL
+                                ); """
     # create tables
     if conn is not None:
         create_table(conn, sql_create_products_table)
+        create_table(conn, sql_create_users_table)
         prime_file = get_data_path()
+        user_file = get_user_data_path()
 
         with open(prime_file, 'r') as myfile:
             data = myfile.read()
@@ -76,6 +95,13 @@ def prime_db():
             for product in obj:
                 json_list = (product['commonName'], product['brand'], product['fullName'], product['price'] ,product['store'], json.dumps(product['tags']))
                 insert_product(conn, json_list)
+
+        with open(user_file, 'r') as userFile:
+            data = userFile.read()
+            obj = json.loads(data)
+            for user in obj:
+                json_list = (user['email'], user['password'])
+                insert_user(conn, json_list)
 
         conn.close()
 
