@@ -8,6 +8,7 @@ You may need to install some dependencies first:
 
     > cd api
     > pip install flask python-dotenv
+    > pip install Flask-Cors
 
 Otherwise, go to the api directory and run flask:
 
