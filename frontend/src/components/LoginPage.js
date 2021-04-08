@@ -46,7 +46,6 @@ export class LoginPage extends React.Component {
 		  			dark: '#28a745',
 		  			contrastText: '#fff',
 				},
-				type: 'dark',
 			},
 		});
 
@@ -67,7 +66,7 @@ export class LoginPage extends React.Component {
 				style={{backgroundImage:"url(" + require("assets/img/produce.jpg").default + ")",}}>
 				<div className="filter" />
 				<div className="content-center">
-					<Container>
+					<Container style={{backgroundColor: '#ffffff'}}>
 						<div className="login-info">
 						<Formik 
 							initialValues={{email: "", password: ""}}
@@ -112,7 +111,8 @@ export class LoginPage extends React.Component {
 							{props => (
 								<form onSubmit={props.handleSubmit}>
 								<ThemeProvider theme={theme}>
-								<h1 className="title">Login</h1>
+								<h1 className="login-reg-title">Login</h1>
+								<br></br>
 									<TextField
 										id="email"
 										name="email"
@@ -145,7 +145,7 @@ export class LoginPage extends React.Component {
 									)}
 									<br></br>
 									<br></br>
-									<Button color="success" type="submit" disabled={props.isSubmitting}>Log In</Button>
+									<Button className="center" color="success" type="submit" disabled={props.isSubmitting}>Log In</Button>
 									<br></br>
 								</ThemeProvider>
 								</form>
