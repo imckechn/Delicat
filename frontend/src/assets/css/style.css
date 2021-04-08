@@ -109,6 +109,11 @@
 }
 
 .input-feedback {
-    color: white;
+    color: black;
     font-size: 14px;
+}
+
+.login-reg-title {
+    color: black;
+    font-family: "Montserrat", "Helvetica", Arial, sans-serif;
 }
